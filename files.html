@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>StudentHub Files</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header class="top-header">
+
+    <h1>📁 StudentHub Files</h1>
+
+    <p>Upload and manage your study materials</p>
+
+</header>
+
+
+
+<div class="file-container">
+
+
+<input 
+type="file" 
+id="fileInput"
+>
+
+
+
+<button onclick="uploadFile()">
+⬆ Upload File
+</button>
+
+
+
+<div id="fileList">
+
+
+</div>
+
+
+
+<button class="back-btn" onclick="goBack()">
+🔙 Back
+</button>
+
+
+</div>
+
+
+
+
+<script>
+
+
+let files = JSON.parse(localStorage.getItem("files")) || [];
+
+
+
+displayFiles();
+
+
+
+function uploadFile(){
+
+
+let input=document.getElementById("fileInput");
+
+
+let file=input.files[0];
+
+
+if(!file){
+
+alert("Select a file");
+
+return;
+
+}
+
+
+
+let url=URL.createObjectURL(file);
+
+
+
+files.push({
+
+name:file.name,
+
+url:url
+
+});
+
+
+
+localStorage.setItem(
+"files",
+JSON.stringify(files)
+);
+
+
+
+displayFiles();
+
+
+input.value="";
+
+
+}
+
+
+
+
+function displayFiles(){
+
+
+let list=document.getElementById("fileList");
+
+
+list.innerHTML="";
+
+
+
+files.forEach((file,index)=>{
+
+
+list.innerHTML += `
+
+
+<div class="file-card">
+
+
+<h3>
+📄 ${file.name}
+</h3>
+
+
+
+<a href="${file.url}" target="_blank">
+
+<button class="preview">
+👁 Preview
+</button>
+
+</a>
+
+
+
+
+<a href="${file.url}" download>
+
+<button class="download">
+⬇ Download
+</button>
+
+</a>
+
+
+
+<button class="delete"
+onclick="deleteFile(${index})">
+
+🗑 Delete
+
+</button>
+
+
+
+</div>
+
+
+`;
+
+
+});
+
+
+}
+
+
+
+
+function deleteFile(index){
+
+
+files.splice(index,1);
+
+
+localStorage.setItem(
+"files",
+JSON.stringify(files)
+);
+
+
+displayFiles();
+
+
+}
+
+
+
+
+function goBack(){
+
+window.location.href="home.html";
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>
