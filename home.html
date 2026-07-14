@@ -6,9 +6,228 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Welcome to StudentHub Home</title>
+<title>StudentHub Home</title>
 
 <link rel="stylesheet" href="style.css">
+
+
+<style>
+
+body{
+
+    margin:0;
+    font-family:Arial,sans-serif;
+
+    min-height:100vh;
+
+    background:
+    linear-gradient(
+    rgba(0,70,140,0.65),
+    rgba(0,150,200,0.65)
+    ),
+    url("books-students.jpg");
+
+    background-size:cover;
+    background-position:center;
+
+    animation:bgMove 10s infinite alternate;
+
+}
+
+
+
+@keyframes bgMove{
+
+    from{
+
+        background-position:center top;
+
+    }
+
+    to{
+
+        background-position:center bottom;
+
+    }
+
+}
+
+
+
+/* Header */
+
+.top-header{
+
+    text-align:center;
+
+    color:white;
+
+    padding:25px;
+
+}
+
+
+
+.logo-small{
+
+    font-size:45px;
+
+    animation:float 3s infinite;
+
+}
+
+
+
+@keyframes float{
+
+    50%{
+
+        transform:translateY(-15px);
+
+    }
+
+}
+
+
+
+
+
+/* Options */
+
+.options{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+
+
+/* Small cards */
+
+.option-card{
+
+    width:280px;
+
+    background:white;
+
+    padding:18px;
+
+    border-radius:15px;
+
+    text-align:center;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,0.25);
+
+
+    animation:show 1s ease;
+
+}
+
+
+
+.option-card:nth-child(2){
+
+    animation-delay:.3s;
+
+}
+
+
+.option-card:nth-child(3){
+
+    animation-delay:.6s;
+
+}
+
+
+
+@keyframes show{
+
+    from{
+
+        opacity:0;
+
+        transform:translateX(-80px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateX(0);
+
+    }
+
+}
+
+
+
+
+.option-card h2{
+
+    color:#0d47a1;
+
+}
+
+
+
+.option-card button{
+
+    background:#0d47a1;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 20px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+
+
+
+.logout{
+
+    display:block;
+
+    margin:30px auto;
+
+    background:#d32f2f;
+
+    color:white;
+
+    border:none;
+
+    padding:12px 30px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+}
+
+
+
+.logout:hover{
+
+    transform:scale(1.1);
+
+}
+
+
+</style>
+
 
 </head>
 
@@ -16,54 +235,48 @@
 <body>
 
 
+
 <header class="top-header">
 
-    <div class="logo-small">
-        🎓
-    </div>
 
-    <h1>StudentHub</h1>
+<div class="logo-small">
 
-    <p id="welcome"></p>
+🎓
+
+</div>
+
+
+<h1>StudentHub</h1>
+
+
+<p id="welcome"></p>
+
 
 </header>
+
+
 
 
 
 <section class="options">
 
 
-<div class="option-card">
-
-    <h2>💬 Add Chat</h2>
-
-    <p>
-        Connect and discuss with students.
-    </p>
-
-    <a href="chat.html">
-        <button>
-            Open Chat
-        </button>
-    </a>
-
-</div>
-
-
 
 <div class="option-card">
 
-    <h2>ℹ️ Information</h2>
+<h2>💬 Chat</h2>
 
-    <p>
-        Get student updates and details.
-    </p>
+<p>
+Connect and discuss with students.
+</p>
 
-    <a href="information.html">
-        <button>
-            View Info
-        </button>
-    </a>
+<a href="chat.html">
+
+<button>
+Open Chat
+</button>
+
+</a>
 
 </div>
 
@@ -72,19 +285,43 @@
 
 <div class="option-card">
 
-    <h2>📁 Files</h2>
+<h2>ℹ️ Information</h2>
 
-    <p>
-        Upload, preview and manage files.
-    </p>
+<p>
+Student updates and details.
+</p>
 
-    <a href="files.html">
-        <button>
-            Open Files
-        </button>
-    </a>
+<a href="information.html">
+
+<button>
+View Info
+</button>
+
+</a>
 
 </div>
+
+
+
+
+<div class="option-card">
+
+<h2>📁 Files</h2>
+
+<p>
+Upload and manage study materials.
+</p>
+
+<a href="files.html">
+
+<button>
+Open Files
+</button>
+
+</a>
+
+</div>
+
 
 
 </section>
@@ -92,9 +329,14 @@
 
 
 
+
 <button class="logout" onclick="logout()">
-    Logout
+
+🚪 Logout
+
 </button>
+
+
 
 
 
@@ -112,6 +354,7 @@ document.getElementById("welcome").innerHTML =
 }
 
 
+
 function logout(){
 
 localStorage.removeItem("studentName");
@@ -122,6 +365,7 @@ window.location.href="index.html";
 
 
 </script>
+
 
 
 </body>
