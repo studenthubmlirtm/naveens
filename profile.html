@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>StudentHub Profile</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<div class="login-container">
+
+
+<div class="logo">
+👤
+</div>
+
+
+<h1>My Profile</h1>
+
+
+<h2 id="username">
+Student
+</h2>
+
+
+<p id="email">
+</p>
+
+
+
+<button onclick="goBack()">
+
+🔙 Back
+
+</button>
+
+
+
+<button onclick="logout()">
+
+🚪 Logout
+
+</button>
+
+
+</div>
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+
+const supabaseUrl =
+"https://tcssuookhtmsumukwrta.supabase.co";
+
+
+const supabaseKey =
+"sb_publishable_Up9zO7qCbkuWCNU_5JwVpg_9jSCM9a5";
+
+
+
+const supabaseClient =
+supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+
+
+
+async function loadProfile(){
+
+
+const {data} =
+await supabaseClient.auth.getUser();
+
+
+
+if(data.user){
+
+
+document.getElementById("username").innerHTML =
+data.user.user_metadata.name || "Student";
+
+
+document.getElementById("email").innerHTML =
+data.user.email;
+
+
+}
+
+
+}
+
+
+
+function goBack(){
+
+window.location.href="home.html";
+
+}
+
+
+
+async function logout(){
+
+
+await supabaseClient.auth.signOut();
+
+
+window.location.href="index.html";
+
+
+}
+
+
+
+loadProfile();
+
+
+
+</script>
+
+
+</body>
+
+</html>
