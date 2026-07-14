@@ -15,23 +15,24 @@
 
 body{
 
-    margin:0;
-    font-family:Arial,sans-serif;
-    min-height:100vh;
+margin:0;
+font-family:Arial,sans-serif;
+min-height:100vh;
 
-    background:
-    linear-gradient(
-    rgba(0,70,140,0.65),
-    rgba(0,150,200,0.65)
-    ),
-    url("books-students.jpg");
+background:
+linear-gradient(
+rgba(0,70,140,0.65),
+rgba(0,150,200,0.65)
+),
+url("books-students.jpg");
 
-    background-size:cover;
-    background-position:center;
+background-size:cover;
+background-position:center;
 
-    animation:bgMove 10s infinite alternate;
+animation:bgMove 10s infinite alternate;
 
 }
+
 
 
 @keyframes bgMove{
@@ -48,11 +49,15 @@ background-position:center bottom;
 
 
 
+
+/* top area */
+
 .top-header{
 
-    text-align:center;
-    color:white;
-    padding:25px;
+color:white;
+text-align:center;
+padding:25px;
+position:relative;
 
 }
 
@@ -60,8 +65,8 @@ background-position:center bottom;
 
 .logo-small{
 
-    font-size:45px;
-    animation:float 3s infinite;
+font-size:45px;
+animation:float 3s infinite;
 
 }
 
@@ -77,26 +82,54 @@ transform:translateY(-15px);
 
 
 
-.profile-btn{
+
+
+/* WhatsApp style profile */
+
+.profile-box{
+
+position:absolute;
+
+right:20px;
+
+top:20px;
 
 background:white;
+
 color:#0d47a1;
-border:none;
-padding:10px 25px;
-border-radius:20px;
-font-weight:bold;
+
+padding:8px 15px;
+
+border-radius:25px;
+
+display:flex;
+
+align-items:center;
+
+gap:8px;
+
 cursor:pointer;
-margin-top:10px;
+
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
 
 }
 
 
 
-.profile-btn:hover{
+.profile-icon{
 
-transform:scale(1.1);
+font-size:25px;
 
 }
+
+
+
+.profile-name{
+
+font-weight:bold;
+
+}
+
 
 
 
@@ -104,20 +137,28 @@ transform:scale(1.1);
 .options{
 
 display:flex;
+
 flex-direction:column;
+
 align-items:center;
+
 gap:20px;
 
 }
 
 
 
+
 .option-card{
 
 width:280px;
+
 background:white;
+
 padding:18px;
+
 border-radius:15px;
+
 text-align:center;
 
 box-shadow:
@@ -129,11 +170,13 @@ animation:show 1s ease;
 
 
 
+
 @keyframes show{
 
 from{
 
 opacity:0;
+
 transform:translateX(-80px);
 
 }
@@ -141,11 +184,14 @@ transform:translateX(-80px);
 to{
 
 opacity:1;
+
 transform:translateX(0);
 
 }
 
 }
+
+
 
 
 
@@ -157,45 +203,23 @@ color:#0d47a1;
 
 
 
+
 .option-card button{
 
 background:#0d47a1;
+
 color:white;
+
 border:none;
+
 padding:10px 20px;
+
 border-radius:8px;
-cursor:pointer;
-
-}
-
-
-
-
-.logout{
-
-display:block;
-margin:30px auto;
-
-background:#d32f2f;
-color:white;
-
-border:none;
-
-padding:12px 30px;
-
-border-radius:10px;
 
 cursor:pointer;
 
 }
 
-
-
-.logout:hover{
-
-transform:scale(1.1);
-
-}
 
 
 </style>
@@ -204,11 +228,35 @@ transform:scale(1.1);
 </head>
 
 
+
 <body>
 
 
 
 <header class="top-header">
+
+
+
+<div onclick="openProfile()" class="profile-box">
+
+
+<div class="profile-icon">
+
+👤
+
+</div>
+
+
+<div class="profile-name" id="profileName">
+
+Student
+
+</div>
+
+
+</div>
+
+
 
 
 <div class="logo-small">
@@ -222,18 +270,6 @@ transform:scale(1.1);
 
 
 <p id="welcome"></p>
-
-
-
-<a href="profile.html">
-
-<button class="profile-btn">
-
-👤 My Profile
-
-</button>
-
-</a>
 
 
 
@@ -315,38 +351,38 @@ Open Files
 
 
 
-<button class="logout" onclick="logout()">
-
-🚪 Logout
-
-</button>
-
-
-
-
 
 <script>
 
 
-let name = localStorage.getItem("studentName");
+let name =
+localStorage.getItem("studentName");
+
 
 
 if(name){
 
+
 document.getElementById("welcome").innerHTML =
 "Welcome, " + name + " 👋";
 
+
+document.getElementById("profileName").innerHTML =
+name;
+
+
 }
 
 
 
-function logout(){
 
-localStorage.removeItem("studentName");
 
-window.location.href="index.html";
+function openProfile(){
+
+window.location.href="profile.html";
 
 }
+
 
 
 </script>
