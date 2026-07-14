@@ -55,9 +55,7 @@ placeholder="Create password"
 
 
 <button onclick="signup()">
-
 Create Account
-
 </button>
 
 
@@ -85,12 +83,13 @@ Login
 <script>
 
 
-const supabaseUrl =
+const supabaseUrl = 
 "YOUR_SUPABASE_URL";
 
 
-const supabaseKey =
+const supabaseKey = 
 "YOUR_SUPABASE_ANON_KEY";
+
 
 
 const supabaseClient =
@@ -101,15 +100,16 @@ supabaseKey
 
 
 
+
 async function signup(){
 
 
 let name =
-document.getElementById("studentName").value;
+document.getElementById("studentName").value.trim();
 
 
 let email =
-document.getElementById("email").value;
+document.getElementById("email").value.trim();
 
 
 let password =
@@ -119,12 +119,11 @@ document.getElementById("password").value;
 
 if(name=="" || email=="" || password==""){
 
-alert("Fill all details");
+alert("Please fill all details");
 
 return;
 
 }
-
 
 
 
@@ -152,7 +151,9 @@ name:name
 
 if(error){
 
-alert(error.message);
+alert("Signup Error: " + error.message);
+
+console.log(error);
 
 return;
 
@@ -160,7 +161,15 @@ return;
 
 
 
-alert("Account created successfully");
+localStorage.setItem(
+"studentName",
+name
+);
+
+
+
+alert("Account created successfully 🎉");
+
 
 
 window.location.href="index.html";
