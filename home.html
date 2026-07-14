@@ -17,7 +17,6 @@ body{
 
     margin:0;
     font-family:Arial,sans-serif;
-
     min-height:100vh;
 
     background:
@@ -35,33 +34,24 @@ body{
 }
 
 
-
 @keyframes bgMove{
 
-    from{
+from{
+background-position:center top;
+}
 
-        background-position:center top;
-
-    }
-
-    to{
-
-        background-position:center bottom;
-
-    }
+to{
+background-position:center bottom;
+}
 
 }
 
 
 
-/* Header */
-
 .top-header{
 
     text-align:center;
-
     color:white;
-
     padding:25px;
 
 }
@@ -71,7 +61,6 @@ body{
 .logo-small{
 
     font-size:45px;
-
     animation:float 3s infinite;
 
 }
@@ -80,68 +69,61 @@ body{
 
 @keyframes float{
 
-    50%{
-
-        transform:translateY(-15px);
-
-    }
+50%{
+transform:translateY(-15px);
+}
 
 }
 
 
 
+.profile-btn{
+
+background:white;
+color:#0d47a1;
+border:none;
+padding:10px 25px;
+border-radius:20px;
+font-weight:bold;
+cursor:pointer;
+margin-top:10px;
+
+}
 
 
-/* Options */
+
+.profile-btn:hover{
+
+transform:scale(1.1);
+
+}
+
+
+
 
 .options{
 
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-
-    gap:20px;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:20px;
 
 }
 
 
-
-/* Small cards */
 
 .option-card{
 
-    width:280px;
+width:280px;
+background:white;
+padding:18px;
+border-radius:15px;
+text-align:center;
 
-    background:white;
+box-shadow:
+0 10px 25px rgba(0,0,0,0.25);
 
-    padding:18px;
-
-    border-radius:15px;
-
-    text-align:center;
-
-    box-shadow:
-    0 10px 25px rgba(0,0,0,0.25);
-
-
-    animation:show 1s ease;
-
-}
-
-
-
-.option-card:nth-child(2){
-
-    animation-delay:.3s;
-
-}
-
-
-.option-card:nth-child(3){
-
-    animation-delay:.6s;
+animation:show 1s ease;
 
 }
 
@@ -149,30 +131,27 @@ body{
 
 @keyframes show{
 
-    from{
+from{
 
-        opacity:0;
+opacity:0;
+transform:translateX(-80px);
 
-        transform:translateX(-80px);
+}
 
-    }
+to{
 
-    to{
+opacity:1;
+transform:translateX(0);
 
-        opacity:1;
-
-        transform:translateX(0);
-
-    }
+}
 
 }
 
 
 
-
 .option-card h2{
 
-    color:#0d47a1;
+color:#0d47a1;
 
 }
 
@@ -180,17 +159,12 @@ body{
 
 .option-card button{
 
-    background:#0d47a1;
-
-    color:white;
-
-    border:none;
-
-    padding:10px 20px;
-
-    border-radius:8px;
-
-    cursor:pointer;
+background:#0d47a1;
+color:white;
+border:none;
+padding:10px 20px;
+border-radius:8px;
+cursor:pointer;
 
 }
 
@@ -199,21 +173,19 @@ body{
 
 .logout{
 
-    display:block;
+display:block;
+margin:30px auto;
 
-    margin:30px auto;
+background:#d32f2f;
+color:white;
 
-    background:#d32f2f;
+border:none;
 
-    color:white;
+padding:12px 30px;
 
-    border:none;
+border-radius:10px;
 
-    padding:12px 30px;
-
-    border-radius:10px;
-
-    cursor:pointer;
+cursor:pointer;
 
 }
 
@@ -221,7 +193,7 @@ body{
 
 .logout:hover{
 
-    transform:scale(1.1);
+transform:scale(1.1);
 
 }
 
@@ -250,6 +222,19 @@ body{
 
 
 <p id="welcome"></p>
+
+
+
+<a href="profile.html">
+
+<button class="profile-btn">
+
+👤 My Profile
+
+</button>
+
+</a>
+
 
 
 </header>
