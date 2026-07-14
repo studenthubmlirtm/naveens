@@ -10,39 +10,144 @@
 
 <link rel="stylesheet" href="style.css">
 
+<style>
+
+.profile-box{
+
+width:90%;
+max-width:400px;
+margin:50px auto;
+background:white;
+padding:30px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+
+}
+
+
+.profile-photo{
+
+font-size:70px;
+margin-bottom:20px;
+
+}
+
+
+.info{
+
+text-align:left;
+padding:10px;
+
+}
+
+
+.info p{
+
+font-size:17px;
+
+}
+
+
+button{
+
+padding:12px 25px;
+border:none;
+border-radius:10px;
+background:#0d47a1;
+color:white;
+cursor:pointer;
+margin:10px;
+
+}
+
+
+button:hover{
+
+transform:scale(1.05);
+
+}
+
+</style>
+
 </head>
 
 
 <body>
 
 
-<div class="login-container">
+<div class="profile-box">
 
 
-<div class="logo">
+<div class="profile-photo">
+
 👤
+
 </div>
+
 
 
 <h1>My Profile</h1>
 
 
+
 <h2 id="username">
-Student
+
+Loading...
+
 </h2>
 
 
-<p id="email">
+
+<div class="info">
+
+
+<p>
+📧 Email:
+<span id="email"></span>
+</p>
+
+
+<p>
+🎓 Student ID:
+<span id="studentId"></span>
+</p>
+
+
+<p>
+🏫 Department:
+<span id="department"></span>
+</p>
+
+
+<p>
+📅 Year:
+<span id="year"></span>
+</p>
+
+
+<p>
+📚 Semester:
+<span id="semester"></span>
+</p>
+
+
+<p>
+📞 Phone:
+<span id="phone"></span>
 </p>
 
 
 
-<button onclick="goBack()">
+</div>
+
+
+
+<button onclick="backHome()">
 
 🔙 Back
 
 </button>
-
 
 
 <button onclick="logout()">
@@ -52,8 +157,8 @@ Student
 </button>
 
 
-</div>
 
+</div>
 
 
 
@@ -82,33 +187,85 @@ supabaseKey
 
 
 
+
 async function loadProfile(){
 
 
-const {data} =
+const {data:userData} =
 await supabaseClient.auth.getUser();
 
 
 
-if(data.user){
+if(!userData.user){
+
+window.location.href="index.html";
+
+return;
+
+}
+
+
+
+let id=userData.user.id;
+
+
+
+const {data,error}=
+
+await supabaseClient
+.from("profiles")
+.select("*")
+.eq("id",id)
+.single();
+
+
+
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
 
 
 document.getElementById("username").innerHTML =
-data.user.user_metadata.name || "Student";
+data.username;
 
 
 document.getElementById("email").innerHTML =
-data.user.email;
+userData.user.email;
+
+
+document.getElementById("studentId").innerHTML =
+data.student_id;
+
+
+document.getElementById("department").innerHTML =
+data.department;
+
+
+document.getElementById("year").innerHTML =
+data.year;
+
+
+document.getElementById("semester").innerHTML =
+data.semester;
+
+
+document.getElementById("phone").innerHTML =
+data.phone;
+
 
 
 }
 
 
-}
 
 
-
-function goBack(){
+function backHome(){
 
 window.location.href="home.html";
 
@@ -118,12 +275,9 @@ window.location.href="home.html";
 
 async function logout(){
 
-
 await supabaseClient.auth.signOut();
 
-
 window.location.href="index.html";
-
 
 }
 
