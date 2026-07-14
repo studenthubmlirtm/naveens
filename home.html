@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>StudentHub Home</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header class="top-header">
+
+    <div class="logo-small">
+        🎓
+    </div>
+
+    <h1>StudentHub</h1>
+
+    <p id="welcome"></p>
+
+</header>
+
+
+
+<section class="options">
+
+
+<div class="option-card">
+
+    <h2>💬 Add Chat</h2>
+
+    <p>
+        Connect and discuss with students.
+    </p>
+
+    <a href="chat.html">
+        <button>
+            Open Chat
+        </button>
+    </a>
+
+</div>
+
+
+
+<div class="option-card">
+
+    <h2>ℹ️ Information</h2>
+
+    <p>
+        Get student updates and details.
+    </p>
+
+    <a href="information.html">
+        <button>
+            View Info
+        </button>
+    </a>
+
+</div>
+
+
+
+
+<div class="option-card">
+
+    <h2>📁 Files</h2>
+
+    <p>
+        Upload, preview and manage files.
+    </p>
+
+    <a href="files.html">
+        <button>
+            Open Files
+        </button>
+    </a>
+
+</div>
+
+
+</section>
+
+
+
+
+<button class="logout" onclick="logout()">
+    Logout
+</button>
+
+
+
+<script>
+
+
+let name = localStorage.getItem("studentName");
+
+
+if(name){
+
+document.getElementById("welcome").innerHTML =
+"Welcome, " + name + " 👋";
+
+}
+
+
+function logout(){
+
+localStorage.removeItem("studentName");
+
+window.location.href="index.html";
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
