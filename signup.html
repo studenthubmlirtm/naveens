@@ -26,60 +26,25 @@
 
 <h1>StudentHub</h1>
 
-<p>Create Student Account</p>
+<p>Create Account</p>
 
 
 
-<input 
+<input
 type="text"
 id="username"
 placeholder="Enter Username"
 >
 
 
-<input 
-type="text"
-id="studentId"
-placeholder="Enter Student ID"
->
-
-
-<input 
-type="text"
-id="department"
-placeholder="Enter Department"
->
-
-
-<input 
-type="text"
-id="year"
-placeholder="Enter Year"
->
-
-
-<input 
-type="text"
-id="semester"
-placeholder="Enter Semester"
->
-
-
-<input 
-type="text"
-id="phone"
-placeholder="Enter Phone Number"
->
-
-
-<input 
+<input
 type="email"
 id="email"
-placeholder="Enter Email"
+placeholder="Enter Gmail"
 >
 
 
-<input 
+<input
 type="password"
 id="password"
 placeholder="Create Password"
@@ -111,9 +76,7 @@ Login
 
 
 
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 
 
 <script>
@@ -125,7 +88,6 @@ const supabaseUrl =
 
 const supabaseKey =
 "sb_publishable_Up9zO7qCbkuWCNU_5JwVpg_9jSCM9a5";
-
 
 
 const supabaseClient =
@@ -141,29 +103,8 @@ supabaseKey
 async function signup(){
 
 
-
 let username =
 document.getElementById("username").value;
-
-
-let studentId =
-document.getElementById("studentId").value;
-
-
-let department =
-document.getElementById("department").value;
-
-
-let year =
-document.getElementById("year").value;
-
-
-let semester =
-document.getElementById("semester").value;
-
-
-let phone =
-document.getElementById("phone").value;
 
 
 let email =
@@ -175,14 +116,9 @@ document.getElementById("password").value;
 
 
 
+if(username=="" || email=="" || password==""){
 
-if(
-username=="" ||
-email=="" ||
-password==""
-){
-
-alert("Fill required details");
+alert("Fill all details");
 
 return;
 
@@ -191,9 +127,8 @@ return;
 
 
 
-// Create account
+const {data,error}=
 
-const {data,error} =
 await supabaseClient.auth.signUp({
 
 email:email,
@@ -214,7 +149,6 @@ name:username
 
 
 
-
 if(error){
 
 alert(error.message);
@@ -226,42 +160,15 @@ return;
 
 
 
-// Save profile details
-
-const {error:profileError} =
-
 await supabaseClient
 .from("profiles")
 .insert({
 
 id:data.user.id,
 
-username:username,
-
-student_id:studentId,
-
-department:department,
-
-year:year,
-
-semester:semester,
-
-phone:phone
+username:username
 
 });
-
-
-
-
-
-if(profileError){
-
-alert(profileError.message);
-
-return;
-
-}
-
 
 
 
@@ -276,17 +183,13 @@ username
 alert("Account created successfully 🎉");
 
 
-
 window.location.href="index.html";
-
 
 
 }
 
 
-
 </script>
-
 
 
 </body>
