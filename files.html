@@ -10,51 +10,261 @@
 
 <link rel="stylesheet" href="style.css">
 
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f5f8ff;
+}
+
+
+/* Top right logo */
+
+.brand-box{
+
+    position:absolute;
+    top:20px;
+    right:20px;
+
+    background:#0d47a1;
+    color:white;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    font-weight:bold;
+}
+
+
+
+.logo{
+
+    font-size:25px;
+
+}
+
+
+
+/* Main */
+
+.file-page{
+
+    padding:80px 30px;
+
+}
+
+
+
+/* Upload center */
+
+.upload-area{
+
+    text-align:center;
+
+    background:white;
+
+    width:350px;
+
+    margin:0 auto 40px;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,0.15);
+
+}
+
+
+
+.upload-area button{
+
+    margin-top:15px;
+
+    background:#0d47a1;
+
+    color:white;
+
+    border:none;
+
+    padding:12px 25px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+
+
+/* File list */
+
+.file-list{
+
+    width:80%;
+
+    margin:auto;
+
+}
+
+
+
+.file-row{
+
+    background:white;
+
+    margin:10px 0;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    box-shadow:0 3px 10px rgba(0,0,0,0.1);
+
+}
+
+
+
+.file-actions button{
+
+    margin-left:5px;
+
+    padding:8px 12px;
+
+    border:none;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+}
+
+
+
+.preview{
+
+    background:green;
+
+    color:white;
+
+}
+
+
+.delete{
+
+    background:red;
+
+    color:white;
+
+}
+
+
+
+.download{
+
+    background:#1565c0;
+
+    color:white;
+
+}
+
+
+
+.back{
+
+    background:#555;
+
+    color:white;
+
+}
+
+
+
+.preview-page{
+
+    text-align:center;
+
+    margin-top:100px;
+
+}
+
+
+</style>
+
 </head>
+
 
 
 <body>
 
 
-<header class="top-header">
+<!-- Logo -->
 
-    <h1>📁 StudentHub Files</h1>
+<div class="brand-box">
 
-    <p>Upload and manage your study materials</p>
+<div class="logo">
+🎓
+</div>
 
-</header>
+StudentHub
+
+</div>
 
 
 
-<div class="file-container">
+
+<div class="file-page">
 
 
-<input 
-type="file" 
-id="fileInput"
->
 
+<!-- Upload -->
+
+<div class="upload-area">
+
+<h2>📁 Upload Files</h2>
+
+
+<input type="file" id="fileInput">
+
+
+<br>
 
 
 <button onclick="uploadFile()">
-⬆ Upload File
+
+⬆ Upload
+
 </button>
 
 
+</div>
 
-<div id="fileList">
 
+
+
+
+<!-- Files -->
+
+<div id="fileList" class="file-list">
 
 </div>
 
 
 
-<button class="back-btn" onclick="goBack()">
-🔙 Back
-</button>
-
-
 </div>
+
 
 
 
@@ -70,11 +280,11 @@ displayFiles();
 
 
 
+
 function uploadFile(){
 
 
 let input=document.getElementById("fileInput");
-
 
 let file=input.files[0];
 
@@ -104,8 +314,11 @@ url:url
 
 
 localStorage.setItem(
+
 "files",
+
 JSON.stringify(files)
+
 );
 
 
@@ -113,8 +326,8 @@ JSON.stringify(files)
 displayFiles();
 
 
-input.value="";
 
+input.value="";
 
 }
 
@@ -137,43 +350,40 @@ files.forEach((file,index)=>{
 list.innerHTML += `
 
 
-<div class="file-card">
+<div class="file-row">
 
 
-<h3>
+<div>
+
 📄 ${file.name}
-</h3>
+
+</div>
 
 
 
-<a href="${file.url}" target="_blank">
+<div class="file-actions">
 
-<button class="preview">
+
+<button class="preview"
+
+onclick="previewFile('${file.url}')">
+
 👁 Preview
+
 </button>
-
-</a>
-
-
-
-
-<a href="${file.url}" download>
-
-<button class="download">
-⬇ Download
-</button>
-
-</a>
 
 
 
 <button class="delete"
+
 onclick="deleteFile(${index})">
 
 🗑 Delete
 
 </button>
 
+
+</div>
 
 
 </div>
@@ -190,6 +400,56 @@ onclick="deleteFile(${index})">
 
 
 
+function previewFile(url){
+
+
+document.body.innerHTML=`
+
+<div class="brand-box">
+
+🎓 StudentHub
+
+</div>
+
+
+<div class="preview-page">
+
+
+<h2>Preview</h2>
+
+
+<a href="${url}" download>
+
+<button class="download">
+
+⬇ Download
+
+</button>
+
+</a>
+
+
+
+<button class="back"
+
+onclick="location.reload()">
+
+🔙 Back
+
+</button>
+
+
+</div>
+
+`;
+
+
+
+}
+
+
+
+
 function deleteFile(index){
 
 
@@ -197,8 +457,11 @@ files.splice(index,1);
 
 
 localStorage.setItem(
+
 "files",
+
 JSON.stringify(files)
+
 );
 
 
@@ -208,17 +471,8 @@ displayFiles();
 }
 
 
-
-
-function goBack(){
-
-window.location.href="home.html";
-
-}
-
-
-
 </script>
+
 
 
 </body>
