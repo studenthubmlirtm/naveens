@@ -15,8 +15,8 @@
 .profile-box{
 
 width:90%;
-max-width:420px;
-margin:40px auto;
+max-width:400px;
+margin:50px auto;
 background:white;
 padding:30px;
 border-radius:20px;
@@ -33,7 +33,6 @@ height:120px;
 border-radius:50%;
 object-fit:cover;
 font-size:70px;
-margin:auto;
 
 }
 
@@ -42,7 +41,7 @@ input{
 
 width:90%;
 padding:12px;
-margin:8px;
+margin:10px;
 border-radius:10px;
 border:1px solid #ccc;
 
@@ -52,19 +51,12 @@ border:1px solid #ccc;
 button{
 
 padding:12px 25px;
-margin:8px;
+margin:10px;
 border:none;
 border-radius:10px;
 background:#0d47a1;
 color:white;
 cursor:pointer;
-
-}
-
-
-button:hover{
-
-transform:scale(1.05);
 
 }
 
@@ -94,34 +86,33 @@ src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
 
 
 
-<input id="username" placeholder="Username">
+<h3>
+Username
+</h3>
+
+<input id="username"
+placeholder="Enter username">
 
 
-<input id="studentId" placeholder="Student ID">
 
+<h3>
+Gmail
+</h3>
 
-<input id="department" placeholder="Department">
-
-
-<input id="year" placeholder="Year">
-
-
-<input id="semester" placeholder="Semester">
-
-
-<input id="phone" placeholder="Phone">
+<input id="email"
+readonly>
 
 
 
 <button onclick="saveProfile()">
 
-💾 Save Profile
+💾 Save
 
 </button>
 
 
 
-<button onclick="backHome()">
+<button onclick="goBack()">
 
 🔙 Back
 
@@ -136,7 +127,6 @@ src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
 </button>
 
 
-
 </div>
 
 
@@ -144,7 +134,6 @@ src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 
 
 <script>
@@ -156,7 +145,6 @@ const supabaseUrl =
 
 const supabaseKey =
 "sb_publishable_Up9zO7qCbkuWCNU_5JwVpg_9jSCM9a5";
-
 
 
 const supabaseClient =
@@ -174,8 +162,7 @@ let userId;
 async function loadProfile(){
 
 
-const {data:userData}=
-
+const {data:userData} =
 await supabaseClient.auth.getUser();
 
 
@@ -193,6 +180,9 @@ return;
 userId=userData.user.id;
 
 
+email.value=userData.user.email;
+
+
 
 const {data}=
 
@@ -206,18 +196,7 @@ await supabaseClient
 
 if(data){
 
-
 username.value=data.username || "";
-
-studentId.value=data.student_id || "";
-
-department.value=data.department || "";
-
-year.value=data.year || "";
-
-semester.value=data.semester || "";
-
-phone.value=data.phone || "";
 
 
 if(data.profile_photo){
@@ -226,13 +205,10 @@ photo.src=data.profile_photo;
 
 }
 
-
 }
 
 
-
 }
-
 
 
 
@@ -240,12 +216,10 @@ photo.src=data.profile_photo;
 async function saveProfile(){
 
 
-
 let imageUrl="";
 
 
-
-const file =
+let file =
 photoFile.files[0];
 
 
@@ -253,9 +227,8 @@ photoFile.files[0];
 if(file){
 
 
-const fileName =
+let fileName =
 userId+"_"+file.name;
-
 
 
 const {error}=
@@ -283,7 +256,6 @@ supabaseClient.storage
 .getPublicUrl(fileName);
 
 
-
 imageUrl=data.publicUrl;
 
 
@@ -291,21 +263,10 @@ imageUrl=data.publicUrl;
 
 
 
-const updateData={
 
+let updateData={
 
-username:username.value,
-
-student_id:studentId.value,
-
-department:department.value,
-
-year:year.value,
-
-semester:semester.value,
-
-phone:phone.value
-
+username:username.value
 
 };
 
@@ -316,6 +277,7 @@ if(imageUrl){
 updateData.profile_photo=imageUrl;
 
 }
+
 
 
 
@@ -338,8 +300,7 @@ return;
 
 
 
-alert("Profile updated successfully 🎉");
-
+alert("Profile updated 🎉");
 
 
 }
@@ -348,11 +309,12 @@ alert("Profile updated successfully 🎉");
 
 
 
-function backHome(){
+function goBack(){
 
 window.location.href="home.html";
 
 }
+
 
 
 
@@ -366,8 +328,8 @@ window.location.href="index.html";
 
 
 
-loadProfile();
 
+loadProfile();
 
 
 </script>
