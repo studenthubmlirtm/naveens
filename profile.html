@@ -15,8 +15,8 @@
 .profile-box{
 
 width:90%;
-max-width:400px;
-margin:50px auto;
+max-width:420px;
+margin:40px auto;
 background:white;
 padding:30px;
 border-radius:20px;
@@ -28,23 +28,23 @@ box-shadow:0 10px 25px rgba(0,0,0,0.2);
 
 .profile-photo{
 
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
 font-size:70px;
-margin-bottom:20px;
+margin:auto;
 
 }
 
 
-.info{
+input{
 
-text-align:left;
-padding:10px;
-
-}
-
-
-.info p{
-
-font-size:17px;
+width:90%;
+padding:12px;
+margin:8px;
+border-radius:10px;
+border:1px solid #ccc;
 
 }
 
@@ -52,12 +52,12 @@ font-size:17px;
 button{
 
 padding:12px 25px;
+margin:8px;
 border:none;
 border-radius:10px;
 background:#0d47a1;
 color:white;
 cursor:pointer;
-margin:10px;
 
 }
 
@@ -67,6 +67,7 @@ button:hover{
 transform:scale(1.05);
 
 }
+
 
 </style>
 
@@ -79,11 +80,9 @@ transform:scale(1.05);
 <div class="profile-box">
 
 
-<div class="profile-photo">
-
-👤
-
-</div>
+<img id="photo"
+class="profile-photo"
+src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
 
 
 
@@ -91,55 +90,34 @@ transform:scale(1.05);
 
 
 
-<h2 id="username">
-
-Loading...
-
-</h2>
+<input type="file" id="photoFile">
 
 
 
-<div class="info">
+<input id="username" placeholder="Username">
 
 
-<p>
-📧 Email:
-<span id="email"></span>
-</p>
+<input id="studentId" placeholder="Student ID">
 
 
-<p>
-🎓 Student ID:
-<span id="studentId"></span>
-</p>
+<input id="department" placeholder="Department">
 
 
-<p>
-🏫 Department:
-<span id="department"></span>
-</p>
+<input id="year" placeholder="Year">
 
 
-<p>
-📅 Year:
-<span id="year"></span>
-</p>
+<input id="semester" placeholder="Semester">
 
 
-<p>
-📚 Semester:
-<span id="semester"></span>
-</p>
-
-
-<p>
-📞 Phone:
-<span id="phone"></span>
-</p>
+<input id="phone" placeholder="Phone">
 
 
 
-</div>
+<button onclick="saveProfile()">
+
+💾 Save Profile
+
+</button>
 
 
 
@@ -148,6 +126,7 @@ Loading...
 🔙 Back
 
 </button>
+
 
 
 <button onclick="logout()">
@@ -163,7 +142,9 @@ Loading...
 
 
 
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
 
 <script>
@@ -186,12 +167,15 @@ supabaseKey
 
 
 
+let userId;
+
 
 
 async function loadProfile(){
 
 
-const {data:userData} =
+const {data:userData}=
+
 await supabaseClient.auth.getUser();
 
 
@@ -206,18 +190,79 @@ return;
 
 
 
-let id=userData.user.id;
+userId=userData.user.id;
 
 
 
-const {data,error}=
+const {data}=
 
 await supabaseClient
 .from("profiles")
 .select("*")
-.eq("id",id)
+.eq("id",userId)
 .single();
 
+
+
+if(data){
+
+
+username.value=data.username || "";
+
+studentId.value=data.student_id || "";
+
+department.value=data.department || "";
+
+year.value=data.year || "";
+
+semester.value=data.semester || "";
+
+phone.value=data.phone || "";
+
+
+if(data.profile_photo){
+
+photo.src=data.profile_photo;
+
+}
+
+
+}
+
+
+
+}
+
+
+
+
+
+async function saveProfile(){
+
+
+
+let imageUrl="";
+
+
+
+const file =
+photoFile.files[0];
+
+
+
+if(file){
+
+
+const fileName =
+userId+"_"+file.name;
+
+
+
+const {error}=
+
+await supabaseClient.storage
+.from("profile-images")
+.upload(fileName,file);
 
 
 
@@ -231,36 +276,74 @@ return;
 
 
 
-document.getElementById("username").innerHTML =
-data.username;
+const {data}=
+
+supabaseClient.storage
+.from("profile-images")
+.getPublicUrl(fileName);
 
 
-document.getElementById("email").innerHTML =
-userData.user.email;
+
+imageUrl=data.publicUrl;
 
 
-document.getElementById("studentId").innerHTML =
-data.student_id;
+}
 
 
-document.getElementById("department").innerHTML =
-data.department;
+
+const updateData={
 
 
-document.getElementById("year").innerHTML =
-data.year;
+username:username.value,
+
+student_id:studentId.value,
+
+department:department.value,
+
+year:year.value,
+
+semester:semester.value,
+
+phone:phone.value
 
 
-document.getElementById("semester").innerHTML =
-data.semester;
+};
 
 
-document.getElementById("phone").innerHTML =
-data.phone;
+
+if(imageUrl){
+
+updateData.profile_photo=imageUrl;
+
+}
+
+
+
+const {error}=
+
+await supabaseClient
+.from("profiles")
+.update(updateData)
+.eq("id",userId);
+
+
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+
+
+alert("Profile updated successfully 🎉");
 
 
 
 }
+
 
 
 
