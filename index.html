@@ -1,47 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Chat</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
+<title>StudentHub Login</title>
 
-    <!-- Supabase Library -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
-<div class="chat-container">
+<div class="login-container">
 
-    <h1>💬 Student Chat</h1>
-
-    <div class="login-box">
-        <input type="text" id="username" placeholder="Enter your name">
-        <button id="joinBtn">Join Chat</button>
+    <div class="logo">
+        🎓
     </div>
 
+    <h1>StudentHub</h1>
 
-    <div id="chatBox" class="chat-box"></div>
+    <p>Your Student Resource Platform</p>
 
 
-    <div class="message-box">
-        <input 
-            type="text" 
-            id="messageInput" 
-            placeholder="Type your message..."
-        >
+    <input 
+        type="text" 
+        id="studentName"
+        placeholder="Enter your name"
+    >
 
-        <button id="sendBtn">
-            Send
-        </button>
-    </div>
+
+    <button onclick="login()">
+        Enter StudentHub
+    </button>
 
 </div>
 
 
-<script src="script.js"></script>
+<script>
+
+function login(){
+
+    let name = document.getElementById("studentName").value;
+
+
+    if(name.trim()==""){
+        alert("Please enter your name");
+        return;
+    }
+
+
+    localStorage.setItem("studentName",name);
+
+
+    window.location.href="home.html";
+
+}
+
+</script>
+
 
 </body>
 </html>
