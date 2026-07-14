@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>StudentHub Chat</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+
+margin:0;
+font-family:Arial;
+background:#e5ddd5;
+
+}
+
+
+.header{
+
+background:#0d47a1;
+color:white;
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+}
+
+
+
+.container{
+
+display:flex;
+height:80vh;
+
+}
+
+
+
+.users{
+
+width:35%;
+background:white;
+overflow-y:auto;
+
+}
+
+
+
+.user{
+
+padding:15px;
+border-bottom:1px solid #ddd;
+cursor:pointer;
+
+}
+
+
+
+.user:hover{
+
+background:#eeeeee;
+
+}
+
+
+
+.online{
+
+color:green;
+font-size:12px;
+
+}
+
+
+
+.chat{
+
+flex:1;
+display:flex;
+flex-direction:column;
+
+}
+
+
+
+.messages{
+
+flex:1;
+padding:15px;
+overflow-y:auto;
+
+}
+
+
+
+.msg{
+
+background:white;
+padding:10px;
+margin:8px;
+border-radius:10px;
+max-width:70%;
+
+}
+
+
+
+.mine{
+
+background:#dcf8c6;
+margin-left:auto;
+
+}
+
+
+
+.input{
+
+display:flex;
+background:white;
+padding:10px;
+
+}
+
+
+
+input{
+
+flex:1;
+padding:12px;
+border-radius:20px;
+border:1px solid #ccc;
+
+}
+
+
+
+button{
+
+border:none;
+padding:10px;
+margin-left:5px;
+border-radius:20px;
+cursor:pointer;
+
+}
+
+
+.send{
+
+background:#0d47a1;
+color:white;
+
+}
+
+
+</style>
+
+</head>
+
+
+
+<body>
+
+
+<div class="header">
+
+<h2>💬 StudentHub</h2>
+
+
+<button onclick="goBack()">
+🔙
+</button>
+
+
+</div>
+
+
+
+
+<div class="container">
+
+
+<div class="users" id="users">
+
+</div>
+
+
+
+
+<div class="chat">
+
+
+<div class="messages" id="messages">
+
+Select a student
+
+</div>
+
+
+
+<div class="input">
+
+
+<button onclick="emoji()">
+😊
+</button>
+
+
+<input id="text"
+placeholder="Message..."
+>
+
+
+<button onclick="sendMessage()" class="send">
+➤
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+
+const supabaseUrl =
+"https://tcssuookhtmsumukwrta.supabase.co";
+
+
+const supabaseKey =
+"sb_publishable_Up9zO7qCbkuWCNU_5JwVpg_9jSCM9a5";
+
+
+
+const supabaseClient =
+supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+
+
+let myId;
+
+let selectedUser=null;
+
+
+
+
+async function start(){
+
+
+const {data}=
+
+await supabaseClient.auth.getUser();
+
+
+myId=data.user.id;
+
+
+loadUsers();
+
+
+}
+
+
+
+async function loadUsers(){
+
+
+const {data}=
+
+await supabaseClient
+.from("user_profiles")
+.select("*");
+
+
+
+let box=document.getElementById("users");
+
+box.innerHTML="";
+
+
+
+data.forEach(user=>{
+
+
+if(user.id!=myId){
+
+
+box.innerHTML += `
+
+
+<div class="user"
+onclick="openChat('${user.id}')">
+
+
+👤 ${user.username || "Student"}
+
+<br>
+
+<span class="online">
+
+${user.online ? "🟢 Online" : "⚪ Last seen "+new Date(user.last_seen).toLocaleString()}
+
+</span>
+
+
+</div>
+
+
+`;
+
+
+}
+
+
+
+});
+
+
+}
+
+
+
+
+function openChat(id){
+
+selectedUser=id;
+
+loadMessages();
+
+}
+
+
+
+
+async function sendMessage(){
+
+
+let text=document.getElementById("text").value;
+
+
+if(!text || !selectedUser){
+
+alert("Select a student first");
+
+return;
+
+}
+
+
+
+
+await supabaseClient
+.from("messages")
+.insert({
+
+sender_id:myId,
+
+receiver_id:selectedUser,
+
+message:text
+
+});
+
+
+
+document.getElementById("text").value="";
+
+
+loadMessages();
+
+
+}
+
+
+
+
+
+async function loadMessages(){
+
+
+if(!selectedUser) return;
+
+
+const {data}=
+
+await supabaseClient
+.from("messages")
+.select("*")
+.or(
+`and(sender_id.eq.${myId},receiver_id.eq.${selectedUser}),and(sender_id.eq.${selectedUser},receiver_id.eq.${myId})`
+)
+.order("created_at");
+
+
+
+let box=document.getElementById("messages");
+
+box.innerHTML="";
+
+
+
+data.forEach(m=>{
+
+
+box.innerHTML += `
+
+<div class="msg ${m.sender_id==myId ? "mine":""}">
+
+${m.message}
+
+</div>
+
+`;
+
+});
+
+
+}
+
+
+
+
+function emoji(){
+
+document.getElementById("text").value+="😊";
+
+}
+
+
+
+function goBack(){
+
+window.location.href="home.html";
+
+}
+
+
+
+start();
+
+
+</script>
+
+
+</body>
+
+</html>
