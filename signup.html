@@ -32,30 +32,65 @@
 
 <input 
 type="text"
-id="studentName"
-placeholder="Enter your name"
+id="username"
+placeholder="Enter Username"
 >
 
+
+<input 
+type="text"
+id="studentId"
+placeholder="Enter Student ID"
+>
+
+
+<input 
+type="text"
+id="department"
+placeholder="Enter Department"
+>
+
+
+<input 
+type="text"
+id="year"
+placeholder="Enter Year"
+>
+
+
+<input 
+type="text"
+id="semester"
+placeholder="Enter Semester"
+>
+
+
+<input 
+type="text"
+id="phone"
+placeholder="Enter Phone Number"
+>
 
 
 <input 
 type="email"
 id="email"
-placeholder="Enter email"
+placeholder="Enter Email"
 >
-
 
 
 <input 
 type="password"
 id="password"
-placeholder="Create password"
+placeholder="Create Password"
 >
 
 
 
 <button onclick="signup()">
+
 Create Account
+
 </button>
 
 
@@ -80,6 +115,7 @@ Login
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
+
 <script>
 
 
@@ -91,6 +127,7 @@ const supabaseKey =
 "sb_publishable_Up9zO7qCbkuWCNU_5JwVpg_9jSCM9a5";
 
 
+
 const supabaseClient =
 supabase.createClient(
 supabaseUrl,
@@ -100,15 +137,37 @@ supabaseKey
 
 
 
+
 async function signup(){
 
 
-let name =
-document.getElementById("studentName").value.trim();
+
+let username =
+document.getElementById("username").value;
+
+
+let studentId =
+document.getElementById("studentId").value;
+
+
+let department =
+document.getElementById("department").value;
+
+
+let year =
+document.getElementById("year").value;
+
+
+let semester =
+document.getElementById("semester").value;
+
+
+let phone =
+document.getElementById("phone").value;
 
 
 let email =
-document.getElementById("email").value.trim();
+document.getElementById("email").value;
 
 
 let password =
@@ -116,15 +175,23 @@ document.getElementById("password").value;
 
 
 
-if(name=="" || email=="" || password==""){
 
-alert("Please fill all details");
+if(
+username=="" ||
+email=="" ||
+password==""
+){
+
+alert("Fill required details");
 
 return;
 
 }
 
 
+
+
+// Create account
 
 const {data,error} =
 await supabaseClient.auth.signUp({
@@ -137,7 +204,7 @@ options:{
 
 data:{
 
-name:name
+name:username
 
 }
 
@@ -150,9 +217,7 @@ name:name
 
 if(error){
 
-alert("Signup Error: " + error.message);
-
-console.log(error);
+alert(error.message);
 
 return;
 
@@ -160,9 +225,50 @@ return;
 
 
 
+
+// Save profile details
+
+const {error:profileError} =
+
+await supabaseClient
+.from("profiles")
+.insert({
+
+id:data.user.id,
+
+username:username,
+
+student_id:studentId,
+
+department:department,
+
+year:year,
+
+semester:semester,
+
+phone:phone
+
+});
+
+
+
+
+
+if(profileError){
+
+alert(profileError.message);
+
+return;
+
+}
+
+
+
+
+
 localStorage.setItem(
 "studentName",
-name
+username
 );
 
 
@@ -174,7 +280,9 @@ alert("Account created successfully 🎉");
 window.location.href="index.html";
 
 
+
 }
+
 
 
 </script>
