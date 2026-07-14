@@ -12,194 +12,36 @@
 
 <style>
 
-body{
+/* keep your existing animation/design CSS here */
 
+body{
     margin:0;
     height:100vh;
-
     display:flex;
     justify-content:center;
     align-items:center;
-
     font-family:Arial,sans-serif;
-
     overflow:hidden;
-
-    background:linear-gradient(
-        135deg,
-        #1565c0,
-        #26c6da
-    );
-
+    background:linear-gradient(135deg,#1565c0,#26c6da);
 }
-
-
-/* Animated circles */
-
-.circle{
-
-    position:absolute;
-
-    border-radius:50%;
-
-    background:rgba(255,255,255,0.15);
-
-    animation:move 8s infinite alternate;
-
-}
-
-
-.circle1{
-
-    width:200px;
-    height:200px;
-
-    top:10%;
-    left:10%;
-
-}
-
-
-.circle2{
-
-    width:300px;
-    height:300px;
-
-    bottom:5%;
-    right:5%;
-
-    animation-delay:2s;
-
-}
-
-
-
-@keyframes move{
-
-    from{
-
-        transform:translateY(0);
-
-    }
-
-    to{
-
-        transform:translateY(-80px);
-
-    }
-
-}
-
-
 
 
 .login-container{
 
-
-    position:relative;
-
     width:90%;
-
     max-width:380px;
-
-
     background:white;
-
     padding:40px 30px;
-
-
     border-radius:25px;
-
-
     text-align:center;
-
-
-    box-shadow:
-    0 15px 35px rgba(0,0,0,0.25);
-
-
-    animation:show 1s ease;
-
+    box-shadow:0 15px 35px rgba(0,0,0,0.25);
 
 }
-
-
-
-@keyframes show{
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(50px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-    }
-
-}
-
-
 
 
 .logo{
 
-    width:90px;
-
-    height:90px;
-
-
-    margin:auto;
-
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-
-    font-size:50px;
-
-
-    border-radius:50%;
-
-
-    background:#e3f2fd;
-
-
-    animation:rotate 3s infinite;
-
-}
-
-
-
-
-@keyframes rotate{
-
-    0%{
-
-        transform:rotate(0deg);
-
-    }
-
-    50%{
-
-        transform:rotate(10deg);
-
-    }
-
-    100%{
-
-        transform:rotate(0deg);
-
-    }
+    font-size:60px;
 
 }
 
@@ -207,7 +49,7 @@ body{
 
 h1{
 
-    color:#0d47a1;
+color:#0d47a1;
 
 }
 
@@ -215,22 +57,12 @@ h1{
 
 input{
 
-
-    width:100%;
-
-    padding:14px;
-
-    margin-top:15px;
-
-
-    border-radius:10px;
-
-
-    border:1px solid #ccc;
-
-
-    font-size:16px;
-
+width:100%;
+padding:14px;
+margin-top:15px;
+border-radius:10px;
+border:1px solid #ccc;
+font-size:16px;
 
 }
 
@@ -238,35 +70,15 @@ input{
 
 button{
 
-
-    width:100%;
-
-    margin-top:20px;
-
-
-    padding:14px;
-
-
-    border:none;
-
-
-    border-radius:10px;
-
-
-    background:#0d47a1;
-
-
-    color:white;
-
-
-    font-size:17px;
-
-
-    cursor:pointer;
-
-
-    transition:.3s;
-
+width:100%;
+margin-top:20px;
+padding:14px;
+border:none;
+border-radius:10px;
+background:#0d47a1;
+color:white;
+font-size:17px;
+cursor:pointer;
 
 }
 
@@ -274,10 +86,7 @@ button{
 
 button:hover{
 
-
-    background:#1565c0;
-
-    transform:scale(1.05);
+background:#1565c0;
 
 }
 
@@ -285,23 +94,19 @@ button:hover{
 
 a{
 
-    color:#0d47a1;
+color:#0d47a1;
 
 }
 
 
-
 </style>
+
 
 </head>
 
 
+
 <body>
-
-
-<div class="circle circle1"></div>
-
-<div class="circle circle2"></div>
 
 
 
@@ -311,7 +116,6 @@ a{
 <div class="logo">
 🎓
 </div>
-
 
 
 <h1>StudentHub</h1>
@@ -347,6 +151,7 @@ Login
 
 
 
+
 <p>
 
 New student?
@@ -358,13 +163,40 @@ Create Account
 </p>
 
 
+
 </div>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 
 <script>
 
-function login(){
+
+const supabaseUrl =
+"https://tcssuookhtmsumukwrta.supabase.co";
+
+
+const supabaseKey =
+"sb_publishable_Up9zO7qCbkuWCNU_5JwVpg_9jSCM9a5";
+
+
+
+const supabaseClient =
+supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+
+
+
+
+async function login(){
+
 
 let email =
 document.getElementById("email").value;
@@ -372,6 +204,7 @@ document.getElementById("email").value;
 
 let password =
 document.getElementById("password").value;
+
 
 
 if(email=="" || password==""){
@@ -383,15 +216,59 @@ return;
 }
 
 
-// Supabase login code will be connected here
 
-alert("Login system ready");
+
+
+const {data,error} =
+await supabaseClient.auth.signInWithPassword({
+
+email:email,
+
+password:password
+
+});
+
+
+
+
+
+if(error){
+
+alert("Login failed: " + error.message);
+
+return;
+
+}
+
+
+
+
+
+localStorage.setItem(
+
+"studentName",
+
+data.user.user_metadata.name || "Student"
+
+);
+
+
+
+
+alert("Login successful 🎉");
+
+
+
+window.location.href="home.html";
+
 
 
 }
 
 
+
 </script>
+
 
 
 </body>
